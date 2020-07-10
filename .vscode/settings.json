@@ -1,0 +1,15 @@
+{
+    "cSpell.ignoreWords": [
+        "bindgen",
+        "devtool",
+        "esnext",
+        "iproduct",
+        "itertools",
+        "repr",
+        "wasm",
+        "wasm bindgen"
+    ],
+    "cSpell.words": [
+        "underpopulation"
+    ]
+}
