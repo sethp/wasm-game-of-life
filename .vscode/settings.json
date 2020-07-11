@@ -11,5 +11,6 @@
     ],
     "cSpell.words": [
         "underpopulation"
-    ]
+    ],
+    "typescript.tsdk": "./www/node_modules/typescript/lib",
 }

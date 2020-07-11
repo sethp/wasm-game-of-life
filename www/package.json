@@ -1,18 +1,14 @@
 {
-  "name": "create-wasm-app",
+  "name": "wasm-game-of-life",
   "version": "0.1.0",
-  "description": "create an app to consume rust-generated wasm packages",
-  "main": "index.js",
-  "bin": {
-    "create-wasm-app": ".bin/create-wasm-app.js"
-  },
+  "description": "my attempt to follow the tutorial, in typescript",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" webpack --config webpack.config.ts",
     "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rustwasm/create-wasm-app.git"
+    "url": "git+https://github.com/sethp/wasm-game-of-life.git"
   },
   "keywords": [
     "webassembly",
@@ -20,18 +16,22 @@
     "rust",
     "webpack"
   ],
-  "author": "Ashley Williams <ashley666ashley@gmail.com>",
+  "author": "Seth Pellegrino <seth@codecopse.net>",
   "license": "(MIT OR Apache-2.0)",
   "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
+    "url": "https://github.com/sethp/wasm-game-of-life/issues"
   },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
+  "homepage": "https://github.com/sethp/wasm-game-of-life#readme",
   "dependencies": {
     "wasm-game-of-life": "file:../pkg"
   },
   "devDependencies": {
+    "@types/node": "^14.0.22",
+    "@types/webpack": "^4.41.21",
     "copy-webpack-plugin": "^5.0.0",
+    "cross-env": "^7.0.2",
     "ts-loader": "^8.0.0",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.6",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.1.0",

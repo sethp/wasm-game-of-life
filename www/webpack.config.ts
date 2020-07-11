@@ -1,7 +1,8 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require('path');
+import * as path from 'path';
+import * as webpack from 'webpack';
+import CopyWebpackPlugin = require("copy-webpack-plugin");
 
-module.exports = {
+const config: webpack.Configuration = {
   entry: "./bootstrap.ts",
   devtool: 'inline-source-map',
   output: {
@@ -26,3 +27,5 @@ module.exports = {
     ]
   },
 };
+
+export default config;
