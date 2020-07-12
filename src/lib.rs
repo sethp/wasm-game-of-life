@@ -4,6 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use itertools::iproduct;
 
+extern crate js_sys;
 extern crate web_sys;
 
 #[allow(unused)]
@@ -153,7 +154,7 @@ impl Universe {
     /// Resets all cells to the dead state.
     pub fn set_width(&mut self, width: u32) {
         self.width = width;
-        self.cells = (0..width * self.height).map(|_i| Cell::Dead).collect();
+        self.reset();
     }
 
     /// Set the height of the universe.
@@ -161,12 +162,28 @@ impl Universe {
     /// Resets all cells to the dead state.
     pub fn set_height(&mut self, height: u32) {
         self.height = height;
-        self.cells = (0..self.width * height).map(|_i| Cell::Dead).collect();
+        self.reset();
     }
 
     pub fn toggle_cell(&mut self, row: u32, column: u32) {
         let idx = self.get_index(row, column);
         self.cells[idx].toggle();
+    }
+
+    pub fn reset(&mut self) {
+        self.cells = (0..self.width * self.height).map(|_i| Cell::Dead).collect();
+    }
+
+    pub fn randomize(&mut self) {
+        self.cells = (0..self.width * self.height)
+            .map(|_| {
+                if js_sys::Math::random() < 0.5 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect();
     }
 }
 
