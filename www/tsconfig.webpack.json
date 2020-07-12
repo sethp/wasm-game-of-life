@@ -3,7 +3,6 @@
     "module": "commonjs",
     "target": "es5",
     "esModuleInterop": true,
-    "baseUrl": "@types",
   },
   "files": [
     "webpack.config.ts",

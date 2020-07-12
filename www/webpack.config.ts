@@ -11,7 +11,7 @@ const config: webpack.Configuration = {
   },
   mode: "development",
   plugins: [
-    new CopyWebpackPlugin(['index.html'])
+    new CopyWebpackPlugin({ patterns: ['index.html'] })
   ],
   resolve: {
     // '.wasm' must come before '.js' for us to find the `memory` reference that the `js` shim does not re-export.

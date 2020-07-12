@@ -4,7 +4,7 @@
   "description": "my attempt to follow the tutorial, in typescript",
   "scripts": {
     "build": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" webpack --config webpack.config.ts",
-    "start": "webpack-dev-server"
+    "start": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" webpack-dev-server --config webpack.config.ts"
   },
   "repository": {
     "type": "git",
@@ -26,14 +26,15 @@
     "wasm-game-of-life": "file:../pkg"
   },
   "devDependencies": {
+    "@types/copy-webpack-plugin": "^6.0.0",
     "@types/node": "^14.0.22",
     "@types/webpack": "^4.41.21",
-    "copy-webpack-plugin": "^5.0.0",
+    "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.2",
     "ts-loader": "^8.0.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6",
-    "webpack": "^4.29.3",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
   }
