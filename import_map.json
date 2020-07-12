@@ -1,0 +1,7 @@
+{
+   "imports": {
+      "./www/index": "./www/index.ts",
+      "wasm-game-of-life": "./pkg/wasm_game_of_life.js",
+      "wasm-game-of-life/wasm_game_of_life_bg": "./life.deno.ts"
+   }
+}
