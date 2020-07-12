@@ -23,13 +23,14 @@ const ctx = canvas.getContext('2d')!;
 
 let animationId: number | null = null;
 const renderLoop = () => {
+    fps.render();
+
     const ticks = Number(ticksRange.value);
     for (let i = 0; i < ticks; i++) {
         universe.tick();
     }
 
-    drawGrid();
-    drawCells();
+    draw();
 
     animationId = requestAnimationFrame(renderLoop);
 };
@@ -65,16 +66,14 @@ const resetButton = <HTMLButtonElement>document.getElementById("reset-all");
 
 resetButton.addEventListener("click", event => {
     universe.reset();
-    drawGrid();
-    drawCells();
+    draw();
 });
 
 const randomButton = <HTMLButtonElement>document.getElementById("reset-random");
 
 randomButton.addEventListener("click", event => {
     universe.randomize();
-    drawGrid();
-    drawCells();
+    draw();
 });
 
 const drawGrid = () => {
@@ -100,19 +99,27 @@ const getIndex = (row: number, column: number) => {
     return row * width + column;
 };
 
-const drawCells = () => {
+const draw = () => {
+    ctx.beginPath();
+    ctx.fillStyle = DEAD_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.stroke();
+
+    drawGrid();
+
     const cellsPtr = universe.cells();
     const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
 
     ctx.beginPath();
 
+    ctx.fillStyle = ALIVE_COLOR;
     for (let row = 0; row < height; row++) {
         for (let col = 0; col < width; col++) {
             const idx = getIndex(row, col);
 
-            ctx.fillStyle = cells[idx] === Cell.Dead
-                ? DEAD_COLOR
-                : ALIVE_COLOR;
+            if (cells[idx] === Cell.Dead) {
+                continue
+            }
 
             ctx.fillRect(
                 col * (CELL_SIZE + 1) + 1,
@@ -169,11 +176,61 @@ canvas.addEventListener("click", event => {
         universe.toggle_cell(row, col);
     }
 
-    drawGrid();
-    drawCells();
+    draw();
 });
 
-drawGrid();
-drawCells();
+const fps = new class {
+    fps: HTMLDivElement;
+    frames: number[];
+    lastFrameTimestamp: number;
+
+    constructor() {
+        this.fps = <HTMLDivElement>document.getElementById("fps");
+        this.frames = [];
+        this.lastFrameTimestamp = performance.now();
+    }
+
+    render() {
+        // Convert the delta time since the last frame render into a measure
+        // of frames per second.
+        const now = performance.now();
+        const delta = now - this.lastFrameTimestamp;
+        this.lastFrameTimestamp = now;
+        const fps = 1 / delta * 1000;
+
+        // Save only the latest 100 timings.
+        this.frames.push(fps);
+        if (this.frames.length > 100) {
+            this.frames.shift();
+        }
+
+        // Find the max, min, and mean of our 100 latest timings.
+        let min = Infinity;
+        let max = -Infinity;
+        let mean = 0;
+        let M2 = 0;
+        for (let i = 0; i < this.frames.length; i++) {
+            min = Math.min(this.frames[i], min);
+            max = Math.max(this.frames[i], max);
+            const count = i + 1;
+            const delta = this.frames[i] - mean
+            mean += delta / count;
+            const delta2 = this.frames[i] - mean;
+            M2 += delta * delta2;
+        }
+        const variance = M2 / this.frames.length;
+
+        // Render the statistics.
+        this.fps.textContent = `
+  Frames per Second:
+           latest = ${Math.round(fps)}
+  avg of last 100 = ${Math.round(mean)} (σ = ${Math.round(Math.sqrt(variance))})
+  min of last 100 = ${Math.round(min)}
+  max of last 100 = ${Math.round(max)}
+  `.trim();
+    }
+};
+
+draw();
 play();
 // pause();
